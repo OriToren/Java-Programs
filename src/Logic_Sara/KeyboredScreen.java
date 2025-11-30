@@ -55,15 +55,15 @@ class KeyboredScreen extends JPanel {
         enter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (LogicParser.isValidStatment(statmentfield.getText())) {
+                if (LogicParser.isValidStatment(statmentfield.getText()) && does_screen2_exist==false) {
                     does_screen2_exist=true;
                     FunctionScreen funcscreen=new FunctionScreen(screensaver, mainpanel, logicParse(statmentfield.getText()));
                     mainpanel.addPanel(funcscreen);
                     mainpanel.add(funcscreen,"screen_2");
                     screensaver.show(mainpanel, "screen_2");
-                } else {
+                } else if (does_screen2_exist==true){
                     execptionarea.setText("cannot enter an invalid statment");
-                }
+                }screensaver.show(mainpanel,"screen_2");
             }
 
         });

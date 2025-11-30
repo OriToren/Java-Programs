@@ -174,7 +174,7 @@ public class FunctionScreen extends JPanel {
                         msgsarea.setText(msgsarea.getText() + statement.toString() + "custom Atoms check: when these Atoms " + trueAtoms.toString() + " are true the statment is " + result + "\n");
 
                     } catch (IllegalArgumentException ex) {
-                        JOptionPane.showMessageDialog(customatoms, ex.getMessage(), "Syntax Error", JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.showMessageDialog(null, ex.getMessage(), "Syntax Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 }
