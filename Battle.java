@@ -47,16 +47,20 @@ public abstract class Battle implements BattleOperations {
     void DecideActionInteractive(Player me, FightEntity enemy){
         if (me.infight) {
             me.resetTurn();
-            BattleOperationsList.DecideActionInteractive(me, enemy, this);
-            nextTurn();
+            if (!didEnd()) {
+                BattleOperationsList.DecideActionInteractive(me, enemy, this);
+                nextTurn();
+            }
         }
         else {nextTurn();}
     }
     void DecideAction(Monster me, FightEntity enemy){
         if (me.infight) {
             me.resetTurn();
-            me.MonsterDesicion(enemy);
-            nextTurn();
+            if (!didEnd()) {
+                me.MonsterDesicion(enemy);
+                nextTurn();
+            }
         }
         else {nextTurn();}
     }
