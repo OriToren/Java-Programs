@@ -189,9 +189,6 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
     public static void monsterSimpleBattleAction(EasternWarrior me,FightEntity enemy){
         BattleOperationsList action=null;
         int chance;
-        if (me.hp<=10){
-            action=selfspecialmove;
-        }else
         if (me.preping){
             action=specialmove;
         }else{
