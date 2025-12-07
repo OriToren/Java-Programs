@@ -105,7 +105,7 @@ public class MultipleBattle extends Battle {
             }
             return victum;
         }
-        System.out.println("from "+opps()+" who do you wish to attack? or pass to not attack anyone");
+        System.out.println("from "+opps()+" who do you wish to attack? or pass to not attack anyone"); //Player.
         String choice=new Scanner(System.in).nextLine();
         for (FightEntity fighter:opps){
             if (choice.equalsIgnoreCase(fighter.name)){

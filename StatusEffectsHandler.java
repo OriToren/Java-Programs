@@ -20,4 +20,10 @@ if (!statusEffects.isEmpty()){
 }
 return false;
 }
+public static void reapplyStatusEffect(HashSet<StatusEffect> statusEffects,StatusEffect effect){
+    if (!statusEffects.add(effect)){
+        statusEffects.remove(effect);
+        statusEffects.add(effect);
+    }
+}
 }

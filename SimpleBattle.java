@@ -78,7 +78,8 @@ public class SimpleBattle extends Battle {
 
     @Override
     public void endBattle() {
-        if (loser().infight){
+        System.out.println(winner()+" has won!");
+        if (loser().infight) {
             loser().die();
         }
     }

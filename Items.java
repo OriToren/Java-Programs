@@ -1,8 +1,8 @@
 package JavaBattleSim;
 
 public enum Items {
-    healingpotion(new HealingPotion()), greaterhealingpotion(new GreaterHealingPotion());
-    Item item;
+    healingpotion(new HealingPotion()), greaterhealingpotion(new GreaterHealingPotion()),poisonbomb(new PoisonBomb());
+    final Item item;
 
     Items(Item item) {
         this.item = item;
