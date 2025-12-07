@@ -20,6 +20,7 @@ public class FireWielderMonster extends ComplexMonster {
     if (preping){
         if (enemy.hp<enemy.maxhp*0.25){
             enemy.die();
+            System.out.println("Execution successful,subject was too weak to handle");
         }else {
             System.out.println("Execution failed,subject was too healthy");
             preping = false;

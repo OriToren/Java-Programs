@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public enum BattleOperationsList implements CombatAction{ // this one is for players;
-    fight,block,useitem,run,pass,heal //used by normalplayers and basic monsters
+    fight,block,use_item,run,pass,heal,weapon_effect,armor_effect //used by normalplayers and basic monsters
     ,prep,selfprep,selfspecialmove,specialmove; //used by complexmonsters
     public static BattleOperationsList decipher(String other){
         for (BattleOperationsList battleoperation:BattleOperationsList.values()){
@@ -15,18 +15,13 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
         return null;
     }
     public static void DecideActionInteractive(Player me, FightEntity enemy, Battle battle) {
-        System.out.print("its "+me.name+"'s"+"("+me.hp+")"+" turn!\nwhat will you do? (fight,block,heal,useitem,run,pass)");
-        if (StatusEffectsHandler.hasStatusEffect(me.statusEffects,me)){
-            System.out.println("  you are also "+me.statusEffects);
-        }else {
-            System.out.println();
-        }
+        System.out.println("turn of "+me+" \nwhat will you do? (fight,block,heal,use_item,weapon_effect,armor_effect,run,pass)");
         Scanner s = new Scanner(System.in);
         BattleOperationsList battleOperation = BattleOperationsList.decipher(s.nextLine());
         if (battleOperation == null) {
             throw new InvalidFightMove("this is not a move you have");
         }
-        if (!battleOperation.toString().equalsIgnoreCase("useitem")) {
+        if (!battleOperation.toString().equalsIgnoreCase("use_item")) {
             BattleOperationsList.SimpleBattleAction(me, enemy, battleOperation, battle, null);
         } else {
             System.out.println("what item do you wish to use");
@@ -34,7 +29,7 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
             BattleOperationsList.SimpleBattleAction(me, enemy, battleOperation, battle, item);
         }
     }
-    public static void SimpleBattleAction(FightEntity fighter,FightEntity fighter2,BattleOperationsList action,Battle battle,Item item){
+    public static void SimpleBattleAction(Player fighter,FightEntity fighter2,BattleOperationsList action,Battle battle,Item item){
         if (action==BattleOperationsList.fight){
             SimpleBattleAttack(fighter,fighter2);
         }
@@ -43,21 +38,41 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
         }
         else if (action==BattleOperationsList.run){
             SimpleBattleRun(fighter,battle);
-
         }
-        else if (action==BattleOperationsList.useitem){
+        else if (action==BattleOperationsList.use_item){
             SimpleBattleUseItem(fighter,item);
         }
         else if (action==pass){
 
         }else if (action==heal){
-            heal((Player) fighter);
+            heal  (fighter);
+        }else if (action==weapon_effect){
+            fighter.weaponEffect();
+        }else if (action==armor_effect){
+            fighter.armorEffect();
         }else {throw new InvalidFightMove("this is not a move you have");}
-
-
-
-
     }
+    private static void SimpleBattleUseItem(FightEntity fighter,Item item) {
+        System.out.println(fighter+" used "+item);
+        fighter.useItem(item);
+    }
+    private static void SimpleBattleRun(FightEntity fighter, Battle battle) {
+        System.out.println(fighter+" attempted to run");
+        fighter.run(battle);
+    }
+    private static void SimpleBattleBlock(FightEntity fighter) {
+        System.out.println(fighter.name+"("+fighter.hp+")"+" is blocking");
+        fighter.block();
+    }
+    private static void SimpleBattleAttack(FightEntity fighter,FightEntity fighter2) {
+        System.out.println(fighter+" is attacking "+fighter2);
+        fighter.fight(fighter2);
+    }
+    private static void heal(Player entity){
+        System.out.println(entity+" healed itself ");
+        entity.heal();
+    }
+    //everthing below is related to basic monsters, juggerants , eastrenwarriors and Firewielders, the original enemies i made.
     public static void monsterSimpleBattleAction(SimpleMonster me,FightEntity enemy){
         BattleOperationsList action=null;
         Item item=null;
@@ -74,7 +89,7 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
             if (chance==5){
                 item=new HealingPotion();
                 me.addItem(item);
-                action=useitem;
+                action=use_item;
             }
         }
         if (action==BattleOperationsList.fight){
@@ -83,7 +98,7 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
         if (action==BattleOperationsList.block){
             SimpleBattleBlock(me);
         }
-        if (action==BattleOperationsList.useitem){
+        if (action==BattleOperationsList.use_item){
             SimpleBattleUseItem(me, item);
         }
     }
@@ -229,26 +244,7 @@ public enum BattleOperationsList implements CombatAction{ // this one is for pla
         me.fight(enemy);
     }
 
-    private static void SimpleBattleUseItem(FightEntity fighter,Item item) {
-        System.out.println(fighter+" used "+item);
-        fighter.useItem(item);
-    }
-    private static void SimpleBattleRun(FightEntity fighter, Battle battle) {
-        System.out.println(fighter+" attempted to run");
-        fighter.run(battle);
-    }
-    private static void SimpleBattleBlock(FightEntity fighter) {
-        System.out.println(fighter.name+"("+fighter.hp+")"+" is blocking");
-        fighter.block();
-    }
-    private static void SimpleBattleAttack(FightEntity fighter,FightEntity fighter2) {
-        System.out.println(fighter+" is attacking "+fighter2);
-        fighter.fight(fighter2);
-    }
-    private static void heal(Player entity){
-        System.out.println(entity+" healed itself ");
-        entity.heal();
-    }
+
     private static void prep(ComplexMonster me){
         me.preping=true;
     }
