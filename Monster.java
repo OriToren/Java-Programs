@@ -22,6 +22,7 @@ public  abstract class Monster extends FightEntity implements MonsterCombat {
         items.add(item);
     }
     public abstract void MonsterDesicion(FightEntity enemy);
+
 }
 
 
