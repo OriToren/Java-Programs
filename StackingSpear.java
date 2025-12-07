@@ -7,7 +7,7 @@ public class StackingSpear extends Weapon {
     @Override
     public boolean effect(Player entity) {
         if (entity.infight) {
-            dmg += 2;
+            entity.dmg += 2;
             return true;
         }
         return false;

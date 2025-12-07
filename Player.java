@@ -4,85 +4,37 @@ public class Player extends FightEntity implements CanHeal {
     Weapon weapon;
     Armor bodyarmor;
     final int dmggrowth=3;
-    public Player(String name) {
-        super();
-        spawn(name);
-    }
-
-    public Player(String name, int lv, int hp, Armor bodyarmor) { //i should have probablly used super for these but that was early in the development so il excuse myself
-        //il change these later.
-        this.name = name;
-        this.lv = lv;
-        this.hp = hp;
-        this.maxhp = hp;
-        this.weapon = new BareHanded();
-        this.dmg = lv * dmggrowth;
-        this.bodyarmor = bodyarmor;
-        this.armor = bodyarmor.Armor_armor;
-        this.infight = false;
-        this.blocking = false;
-        this.items = new BackPack<Item>();
-    }
-
     public Player(String name, int lv, int hp, Weapon weapon, Armor bodyarmor) {
+        super(name, lv, hp); // Optional: if you want to use the FightEntity super constructor
         this.name = name;
         this.lv = lv;
         this.hp = hp;
         this.maxhp = hp;
-        this.armor = bodyarmor.Armor_armor;
+        this.weapon = weapon;
         this.bodyarmor = bodyarmor;
+        this.dmg = (lv * dmggrowth) + weapon.dmg;
+        this.armor = bodyarmor.Armor_armor;
         this.infight = false;
         this.blocking = false;
         this.items = new BackPack<Item>();
-        this.weapon = weapon;
-        this.dmg = lv * dmggrowth + weapon.dmg;
-
     }
 
     public Player(String name, int lv, int hp, Weapon weapon) {
-        this.name = name;
-        this.lv = lv;
-        this.hp = hp;
-        this.maxhp = hp;
-        this.armor = new BasicShirt().Armor_armor;
-        this.bodyarmor = new BasicShirt();
-        this.infight = false;
-        this.blocking = false;
-        this.items = new BackPack<Item>();
-        this.weapon = weapon;
-        this.dmg = lv * dmggrowth + weapon.dmg;
+        this(name, lv, hp, weapon, new BasicShirt());
+    }
 
+    public Player(String name, int lv, int hp, Armor bodyarmor) {
+        this(name, lv, hp, new BareHanded(), bodyarmor);
     }
 
     public Player(String name, int lv, int hp) {
-        this.name = name;
-        this.lv = lv;
-        this.hp = hp;
-        this.maxhp=hp;
-        this.weapon=new BareHanded();
-        this.bodyarmor=new BasicShirt();
-        this.dmg= weapon.dmg+lv*dmggrowth;
-        this.armor= bodyarmor.Armor_armor;
-        this.infight=false;
-        this.blocking=false;
-        this.items=new BackPack<Item>();
-
-
+        this(name, lv, hp, new BareHanded(), new BasicShirt());
     }
 
-    private void spawn(String name) {
-        this.name = name;
-        this.lv = 1;
-        this.hp = 100;
-        this.maxhp = 100;
-        this.weapon = new BareHanded();
-        this.dmg = lv * dmggrowth + weapon.dmg;
-        this.armor = 10;
-        this.infight = false;
-        this.blocking = false;
-        this.items = new BackPack<Item>();
+    // 5. Spawn/Default (Defaults to Lvl 1, 100 HP, BareHanded, BasicShirt)
+    public Player(String name) {
+        this(name, 1, 100, new BareHanded(), new BasicShirt());
     }
-
     @Override
     public void useItem(Item item) {
         if (items.getItem(item) != null) {
@@ -106,12 +58,12 @@ public class Player extends FightEntity implements CanHeal {
 
     public void equipWeapon(Weapon weapon) {
         this.weapon = weapon;
-        this.dmg = lv * 4 + weapon.dmg;
+        this.dmg = lv * dmggrowth + weapon.dmg;
     }
 
     public void dropWeapon() {
         this.weapon = new BareHanded();
-        this.dmg = lv * 4;
+        this.dmg = lv * dmggrowth;
     }
 
     public void weaponEffect() {
